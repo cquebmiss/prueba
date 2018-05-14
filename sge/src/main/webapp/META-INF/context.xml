@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/sge">
+
+	<Resource auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30"
+		maxWait="10000" removeAbandoned="true" name="webrh"
+		password="@FPD1730yendoqueb" type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/webrh" username="root" />
+
+	<Resource auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30"
+		maxWait="10000" removeAbandoned="true" name="archivodigitalweb"
+		password="@FPD1730yendoqueb" type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/archivodigitalweb" username="root" />
+
+	<Resource auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30"
+		maxWait="10000" removeAbandoned="true" name="siri"
+		password="@FPD1730yendoqueb" type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/siri" username="root" />
+
+	<Resource auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30"
+		maxWait="10000" removeAbandoned="true" name="nominas"
+		password="@FPD1730yendoqueb" type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/nominas" username="root" />
+
+	<Resource auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30"
+		maxWait="10000" removeAbandoned="true" name="timbrado"
+		password="@FPD1730yendoqueb" type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/timbrado" username="root" />
+
+	<Resource auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30"
+		maxWait="10000" removeAbandoned="true" name="spoolerpdf"
+		password="@FPD1730yendoqueb" type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/spoolerpdf" username="root" />
+
+
+	<Resource auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30"
+		maxWait="10000" removeAbandoned="true" name="minutas"
+		password="@FPD1730yendoqueb" type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/minutas" username="root" />
+
+	<Resource auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30"
+		maxWait="10000" removeAbandoned="true" name="gestiones"
+		password="@FPD1730yendoqueb" type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/gestiones" username="root" />
+
+	<Resource auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30"
+		maxWait="10000" removeAbandoned="true" name="climalaboral"
+		password="@FPD1730yendoqueb" type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/climalaboral" username="root" />
+
+</Context>

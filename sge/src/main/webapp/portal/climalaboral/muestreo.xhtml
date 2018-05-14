@@ -1,0 +1,139 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">Sistema de Gestión Empresarial - Muestreo Aleatorio</ui:define>
+	<ui:define name="viewname">
+		<li><p:link outcome="/portal/dashboard">Portal</p:link></li>
+		<li>/</li>
+		<li>Muestreo Aleatorio - Encuesta Clima Laboral 2018</li>
+	</ui:define>
+
+
+	<ui:define name="content">
+		<div class="ui-g">
+			<div class="ui-g-12 card">
+
+				<p:outputPanel id="panelGroupGeneral">
+					<p:autoUpdate></p:autoUpdate>
+
+					<h:form>
+
+						<h1>
+							Total de encuestas:
+							<h:outputText value="#{muestreoBean.total}"></h:outputText>
+						</h1>
+
+						<p:dataTable var="clasificacion"
+							value="#{muestreoBean.clasificaciones}" style="margin-top:40px">
+							<f:facet name="header">
+            Clasificación para el Muestreo
+                    </f:facet>
+
+							<p:columnGroup type="header">
+								<p:row>
+									<p:column rowspan="2" headerText="Personal" />
+									<p:column rowspan="2" headerText="Total Personal" />
+									<p:column colspan="5" headerText="Jornada" />
+								</p:row>
+
+								<p:row>
+									<ui:repeat value="#{muestreoBean.catJornadas}" var="jornada">
+										<p:column headerText="#{jornada.descripcion}" />
+									</ui:repeat>
+								</p:row>
+							</p:columnGroup>
+
+							<p:column>
+								<h:outputText value="#{clasificacion.descripcion}" />
+							</p:column>
+
+							<p:column style="text-align: center;">
+								<h:outputText value="#{clasificacion.totalPersonal}" />
+							</p:column>
+
+							<p:columns value="#{muestreoBean.catJornadas}"
+								style="text-align: center;" var="jornada">
+								<h:outputText
+									value="#{clasificacion.getTotalPorJornadaClasificada(jornada.idJornada)}"></h:outputText>
+							</p:columns>
+
+							<f:facet name="footer">
+
+								<p:commandButton value="Realizar Sorteo"
+									actionListener="#{muestreoBean.realizarSorteo}"></p:commandButton>
+
+							</f:facet>
+
+
+						</p:dataTable>
+
+						<p:spacer height="25">
+						</p:spacer>
+
+
+						<h1>Resultados del Sorteo</h1>
+
+
+						<p:tabView value="#{muestreoBean.clasificaciones}" var="clas">
+
+							<p:tab title="#{clas.descripcion}">
+
+								<p:tabView value="#{clas.jornadasClasificadas}" var="clasGrup">
+
+									<p:tab title="#{clasGrup.jornada.descripcion}">
+
+										<p:spacer height="25"></p:spacer>
+
+										<h:commandLink value="Exportar a XLS">
+											<p:dataExporter type="xls" target="tbl" fileName="cars" />
+										</h:commandLink>
+
+
+
+										<p:dataTable id="tbl" value="#{clasGrup.folios}" var="folio"
+											emptyMessage="...">
+
+
+											<p:column headerText="Grupo">
+
+												<h:outputText
+													value="#{clas.descripcion} #{clasGrup.jornada.descripcion}"></h:outputText>
+
+											</p:column>
+
+											<p:column headerText="Número Sorteado"
+												style="text-align: center;">
+
+												<h:outputText value="#{folio.numero}"></h:outputText>
+											</p:column>
+											<p:column headerText="Folio Generado"
+												style="text-align: center;">
+												<h:outputText value="#{folio.idFolio}"></h:outputText>
+
+											</p:column>
+
+										</p:dataTable>
+
+
+									</p:tab>
+
+								</p:tabView>
+							</p:tab>
+						</p:tabView>
+
+					</h:form>
+
+
+				</p:outputPanel>
+
+
+
+			</div>
+		</div>
+
+	</ui:define>
+
+</ui:composition>

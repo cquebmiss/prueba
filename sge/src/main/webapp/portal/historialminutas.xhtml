@@ -1,0 +1,232 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">Sistema de Gestión Empresarial - Historial de Minutas</ui:define>
+	<ui:define name="viewname">
+		<li>Portal</li>
+		<li>/</li>
+		<li><p:link outcome="/portal/minutas">Historial de Minutas</p:link></li>
+	</ui:define>
+
+	<ui:define name="content">
+
+
+
+		<div class="ui-g">
+			<div class="ui-g-12">
+				<div class="card">
+					<h1>Historial de Minutas</h1>
+
+
+					<!-- <div>
+						<div class="ui-inputgroup">
+							<p:inputText placeholder="Buscar..." />
+							<p:commandButton icon="fa fa-search" styleClass="white-button" />
+						</div>
+					</div> 
+
+					<br></br> <br></br>
+-->
+					<h:form>
+
+						<p:dataTable id="tablaMinutas" widgetVar="wTablaMinutas"
+							styleClass="classTablaMinutas" reflow="true" emptyMessage="..."
+							value="#{historialMinutasBean.minutas}" var="minuta"
+							filteredValue="#{historialMinutasBean.minutasFilter}"
+							paginator="true" paginatorPosition="top" rows="10"
+							paginatorAlwaysVisible="true">
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<p:inputText id="globalFilter"
+										onkeyup="PF('wTablaMinutas').filter()" style="width:150px"
+										placeholder="Buscar..." />
+								</p:outputPanel>
+							</f:facet>
+
+							<p:column headerText="Folio" sortBy="#{minuta.idMinuta}"
+								style="text-align: center; width: 100px;"
+								filterBy="#{minuta.idMinuta}" filterMatchMode="contains">
+								<h:outputText value="#{minuta.idMinuta}">
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Fecha / Hora" style="text-align: center;"
+								sortBy="#{minuta.fechaHoraString}"
+								filterBy="#{minuta.fechaHoraString}" filterMatchMode="contains">
+								<h:outputText value="#{minuta.fechaHoraString}">
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Asunto" sortBy="#{minuta.descripcion}"
+								filterBy="#{minuta.descripcion}" filterMatchMode="contains">
+								<h:outputText value="#{minuta.descripcion}"></h:outputText>
+							</p:column>
+
+							<p:column headerText="Status" style="text-align: center;"
+								sortBy="#{minuta.status.descripcion}"
+								filterBy="#{minuta.status.descripcion}"
+								filterMatchMode="contains">
+
+								<f:facet name="filter">
+									<p:selectOneMenu onchange="PF('wTablaMinutas').filter()">
+										<f:selectItem itemLabel="..." itemValue="#{null}"
+											noSelectionOption="true" />
+										<f:selectItem itemLabel="Creada" itemValue="Creada" />
+										<f:selectItem itemLabel="Enviada por Email"
+											itemValue="Enviada por Email" />
+										<f:selectItem itemLabel="Verificada por participantes"
+											itemValue="Verificada" />
+
+									</p:selectOneMenu>
+								</f:facet>
+
+
+								<h:outputText value="#{minuta.status.descripcion}"></h:outputText>
+							</p:column>
+
+							<p:column headerText="Opciones" style="width: 145px;">
+
+								<div class="ui-g">
+
+									<div class="ui-g-4">
+
+										<p:commandButton icon="fa fa-search"
+											actionListener="#{minuta.updateAllDataBD}"
+											onsuccess="PF('dlgDetallesMinuta').show()">
+											<f:setPropertyActionListener value="#{minuta}"
+												target="#{historialMinutasBean.minutaSelec}" />
+										</p:commandButton>
+									</div>
+
+									<div class="ui-g-4">
+
+										<h:outputLink target="blank"
+											value="#{request.contextPath}/resources/minutas/#{minuta.idMinuta}.pdf">
+											<p:commandButton icon="fa fa-file" type="button"></p:commandButton>
+										</h:outputLink>
+									</div>
+									<div class="ui-g-4">
+										<p:commandButton icon="fa fa-edit"
+											action="#{minutaBean.activarModoEdicion}">
+											<f:setPropertyActionListener value="#{minuta}"
+												target="#{minutaBean.minuta}" />
+
+										</p:commandButton>
+									</div>
+
+								</div>
+
+
+							</p:column>
+
+						</p:dataTable>
+
+					</h:form>
+
+
+
+
+					<h:form id="formDlgDetallesMinuta">
+
+						<p:dialog header="Detalles de la Minuta"
+							widgetVar="dlgDetallesMinuta" modal="true" responsive="true"
+							width="300" height="400" minimizable="false" maximizable="true"
+							draggable="false" closeOnEscape="true">
+
+							<p:outputPanel deferredMode="visible">
+								<p:autoUpdate></p:autoUpdate>
+
+								<div class="ui-g">
+									<div class="ui-g-12">
+										<h:outputText style="font-weight: bolder;"
+											value="#{historialMinutasBean.minutaSelec.descripcion}"></h:outputText>
+									</div>
+									<div class="ui-g-12">
+										<h:outputText style="font-weight: bolder;"
+											value="#{historialMinutasBean.minutaSelec.fechaHoraString}"></h:outputText>
+									</div>
+
+									<h1>Participantes</h1>
+
+									<ui:repeat var="par"
+										value="#{historialMinutasBean.minutaSelec.participantes}">
+
+										<div class="ui-g-12">
+											<h:outputText style="font-weight: bolder"
+												value="#{par.persona.nombre} #{par.persona.apellidoPaterno} #{par.persona.apellidoMaterno} "></h:outputText>
+											<h:outputText value="( #{par.persona.cargo} )"></h:outputText>
+										</div>
+
+									</ui:repeat>
+
+									<h1>Temas</h1>
+
+									<ol>
+										<ui:repeat var="tema"
+											value="#{historialMinutasBean.minutaSelec.temas}">
+
+											<div class="ui-g-12">
+
+												<li><h:outputText style="font-weight: bolder"
+														value="#{tema.descripcion} - "></h:outputText> <h:outputText
+														value="#{tema.responsable.persona.nombre} #{tema.responsable.persona.apellidoPaterno} #{tema.responsable.persona.apellidoMaterno} "></h:outputText>
+													<h:outputText value="( #{tema.responsable.persona.cargo} )"></h:outputText>
+												</li>
+											</div>
+										</ui:repeat>
+
+									</ol>
+
+
+									<h1>Compromisos Agendados</h1>
+
+
+									<ol>
+										<ui:repeat var="compromiso"
+											value="#{historialMinutasBean.minutaSelec.compromisos}">
+
+											<div class="ui-g-12">
+												<li><h:outputText style="font-weight: bolder"
+														value="#{compromiso.descripcion} - "></h:outputText> <h:outputText
+														value="#{compromiso.responsable.persona.nombre} #{compromiso.responsable.persona.apellidoPaterno} #{compromiso.responsable.persona.apellidoMaterno} "></h:outputText>
+													<h:outputText
+														value="( #{compromiso.responsable.persona.cargo} )"></h:outputText>
+												</li>
+											</div>
+
+										</ui:repeat>
+									</ol>
+
+								</div>
+
+							</p:outputPanel>
+
+							<f:facet name="header">
+
+								<p:commandButton id="botonCancelarDlgDetallesMinuta"
+									widgetVar="wbotonCancelarDlgDetallesMinuta" value="Cancelar"
+									type="button" styleClass="secondary-button" icon="fa fa-close"
+									onclick="PF('dlgDetallesMinuta').hide()" />
+
+							</f:facet>
+
+						</p:dialog>
+
+					</h:form>
+
+
+					<br></br> <br></br>
+
+
+
+				</div>
+			</div>
+		</div>
+
+	</ui:define>
+
+</ui:composition>

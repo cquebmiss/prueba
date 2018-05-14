@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+	<title>Sistema de Gestión Empresarial - Acceso al portal</title>
+</h:head>
+
+<h:body styleClass="login-body">
+	<div class="logo">
+	<!-- 	<p:graphicImage name="images/indesalud-logo.png"
+			library="harmony-layout" /> -->
+		<span class="app-name">INDESALUD</span>
+	</div>
+
+	<div class="login-panel">
+
+		<h:form>
+			<p:focus for="inputUsuario"></p:focus>
+
+			<!-- Imagen de login para móvil, considerar al editar las nuevas imágenes para el portal -->
+			<p:graphicImage name="images/template/image-login-mobile2.jpg"
+				library="harmony-layout" class="mobile" />
+
+			<div class="left-part">
+				<span class="login-panel-header">Acceso al Portal</span> <span
+					class="login-panel-subheader">Bienvenido, por favor use el
+					formulario para acceder</span>
+				<div style="margin-top: 32px">
+					<p:outputLabel value="Usuario" />
+					<p:inputText id="inputUsuario" value="#{login.usuario}" />
+					<p:outputLabel value="Contraseña" />
+					<p:password value="#{login.contrasena}" />
+					<!--	<p:inputSwitch />	-->
+					<!--	<p:outputLabel value="Remember me" />	-->
+				</div>
+
+				<p:commandButton value="Acceder" style="margin-bottom:10px"
+					styleClass="raised-btn" update="@all"
+					actionListener="#{login.actionBotonAcceder}"
+					action="#{login.isInSession}"></p:commandButton>
+			</div>
+
+			<div class="right-part">
+				<p:graphicImage name="images/template/image-login2.png"
+					library="harmony-layout" />
+			</div>
+
+		</h:form>
+
+
+	</div>
+	<h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css"
+		library="harmony-layout" />
+</h:body>
+
+</html>

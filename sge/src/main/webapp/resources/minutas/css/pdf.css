@@ -1,0 +1,89 @@
+@font-face {
+	font-family: "Rui Abreu - AzoSans-Light";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-Light.otf")
+}
+
+@font-face {
+	font-family: "Rui Abreu - AzoSans-Black";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-Black.otf")
+}
+
+@font-face {
+	font-family: "Rui Abreu - AzoSans-BlackItalic";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-BlackItalic")
+}
+
+@font-face {
+	font-family: "Rui Abreu - AzoSans-Bold";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-Bold")
+}
+
+@font-face {
+	font-family: "Rui Abreu - AzoSans-BoldItalic";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-BoldItalic")
+}
+
+@font-face {
+	font-family: "Rui Abreu - AzoSans-Italic";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-Italic")
+}
+
+@font-face {
+	font-family: "Rui Abreu - AzoSans-LightItalic";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-LightItalic")
+}
+
+@font-face {
+	font-family: "Rui Abreu - AzoSans-Medium";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-Medium")
+}
+
+@font-face {
+	font-family: "Rui Abreu - AzoSans-Regular";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-Regular")
+}
+
+@font-face {
+	font-family: "Rui Abreu - AzoSans-Thin";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-Thin")
+}
+
+@font-face {
+	font-family: "Rui Abreu - AzoSans-ThinItalic";
+	src: url("Azo Sans Font Family/Rui Abreu - AzoSans-ThinItalic")
+}
+
+* {
+	font-family: "Rui Abreu - AzoSans-Medium";
+	font-size: 10px;
+}
+
+p {
+	margin-top: .0em;
+	margin-bottom: .0em;
+	text-align: justify;
+}
+
+table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 300px;
+}
+
+td, th {
+	text-align: center;
+	padding: 30px;
+}
+
+h2 {
+	text-align: center;
+}
+
+td {
+	width: 50%;
+	vertical-align: bottom;
+}
+
+img {
+	height: 100px;
+}

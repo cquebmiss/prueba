@@ -1,0 +1,1025 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<div class="ui-g" id="div1">
+		<div class="ui-g-12" id="div2">
+			<div class="card" id="div3">
+				<h1>
+					<h:outputText
+						value="#{minutaBean.editarMinuta gt -1 ? 'Edición de Minuta' : 'Nueva Minuta' }"></h:outputText>
+				</h1>
+
+
+				<div class="ui-fluid" id="div4">
+					<div class="ui-g" id="div5">
+						<div class="ui-g-12" id="div6">
+							<div class="card card-w-title" id="div7">
+								<h:form id="formMinuta">
+
+
+									<p:panelGrid columns="2"
+										columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2 ui-grc-2,ui-g-12 ui-md-4"
+										layout="grid"
+										styleClass="ui-panelgrid-blank form-group form-elements"
+										style="border:0px none; background-color:transparent;">
+
+
+										<p:outputLabel for="outputIdMinuta" value="Folio Minuta:"
+											rendered="#{minutaBean.editarMinuta gt -1}" />
+										<h:outputText id="outputIdMinuta"
+											value="#{minutaBean.minuta.idMinuta}"
+											rendered="#{minutaBean.editarMinuta gt -1}" />
+
+										<p:outputLabel for="inputAsunto" value="Asunto" />
+										<p:inputText id="inputAsunto"
+											value="#{minutaBean.minuta.descripcion}" />
+
+										<p:outputLabel for="inputLugar" value="Lugar" />
+										<p:inputText id="inputLugar"
+											value="#{minutaBean.minuta.lugar}" />
+
+										<p:outputLabel for="inputFechaHora" value="Fecha / Hora" />
+										<p:calendar id="inputFechaHora" pattern="MM/dd/yyyy HH:mm"
+											value="#{minutaBean.minuta.fechaHora}" />
+
+										<p:column></p:column>
+										<p:commandButton id="botonCrearMinuta"
+											value="#{minutaBean.minuta.idMinuta lt 0 ? 'Crear Minuta' : 'Guardar Cambios'}"
+											icon="fa fa-save" style="max-width:150px;"
+											actionListener="#{minutaBean.minuta.crearMinutaBD}"
+											update="@(.panelFormularioMinuta), @this">
+										</p:commandButton>
+
+
+									</p:panelGrid>
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<h:panelGroup id="outputFormularioMinuta"
+					styleClass="panelFormularioMinuta">
+
+					<h:panelGroup rendered="#{minutaBean.minuta.idMinuta gt -1}">
+
+
+						<h1>Participantes</h1>
+
+
+						<div id="divParticipantes">
+							<div class="ui-inputgroup">
+								<h:form>
+									<p:dialog header="Crear Participante"
+										widgetVar="dlgParticipantes" modal="true" responsive="true"
+										draggable="false" width="300" minimizable="true" height="350"
+										maximizable="false" closeOnEscape="true" focus="inputNombre">
+
+										<p:scrollPanel
+											style="height: 100%; width: 350px; border: 0px solid;"
+											mode="native">
+
+											<div class="card card-w-title">
+
+
+												<h1>Datos del Participante</h1>
+
+												<p:messages styleClass="msjFormParticipante" closable="true">
+												</p:messages>
+
+												<p:panelGrid id="panelGridNuevoParticipante" columns="1"
+													layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+													<p:inputText id="inputNombre" placeholder="Nombres"
+														value="#{dialogoParticipanteBean.nombres}" required="true"
+														requiredMessage="- Nombre">
+													</p:inputText>
+
+													<p:inputText placeholder="Apellido Paterno"
+														value="#{dialogoParticipanteBean.apellidoPaterno}"
+														required="true" requiredMessage="- Apellido Paterno">
+													</p:inputText>
+
+													<p:inputText placeholder="Apelido Materno"
+														value="#{dialogoParticipanteBean.apellidoMaterno}">
+													</p:inputText>
+
+													<p:inputText placeholder="Cargo"
+														value="#{dialogoParticipanteBean.cargo}" required="true"
+														requiredMessage="- Cargo">
+													</p:inputText>
+
+													<p:selectOneMenu value="#{dialogoParticipanteBean.sexo}"
+														required="true" requiredMessage="- Sexo">
+
+														<f:selectItem itemLabel="Masculino" itemValue="m"></f:selectItem>
+														<f:selectItem itemLabel="Femenino" itemValue="f"></f:selectItem>
+
+													</p:selectOneMenu>
+
+													<p:inputText placeholder="Titulo de profesión"
+														value="#{dialogoParticipanteBean.titulo}" required="true"
+														requiredMessage="- Profesión">
+													</p:inputText>
+
+												</p:panelGrid>
+
+
+
+											</div>
+										</p:scrollPanel>
+
+										<f:facet name="footer">
+											<p:commandButton id="botonAceptarDlgParticipante"
+												widgetVar="wbotonAceptarDlgParticipante" value="Aceptar"
+												icon="fa fa-check"
+												actionListener="#{minutaBean.actionAñadirParticipanteDesdeDialogo}"
+												update="@(.msjFormParticipante), @(.classTablaParticipantes) "
+												oncomplete="handleAñadirParticipante(xhr, status, args)"
+												process="@form" />
+											<p:commandButton id="botonCancelarDlgParticipante"
+												widgetVar="wbotonCancelarDlgParticipante" value="Cancelar"
+												type="button" styleClass="secondary-button"
+												icon="fa fa-close" onclick="PF('dlgParticipantes').hide()" />
+										</f:facet>
+
+
+
+									</p:dialog>
+
+									<p:commandButton icon="fa fa-plus"
+										onclick="PF('dlgParticipantes').show()" type="button">
+										<p:resetInput target="panelGridNuevoParticipante" />
+									</p:commandButton>
+
+									<p:autoComplete placeholder="Buscar participante..."
+										minQueryLength="3" value="#{minutaBean.participanteSelec}"
+										var="participante"
+										itemLabel="#{participante == null ? '' : participante.persona.nombre.concat(' ' ).concat(participante.persona.apellidoPaterno).concat(' ').concat(participante.persona.apellidoMaterno).concat(' - ').concat(participante.persona.cargo) }"
+										itemValue="#{participante}"
+										completeMethod="#{minutaBean.getParticipantesRegistrados}"
+										converter="participanteConverter">
+
+										<p:ajax event="itemSelect"
+											listener="#{minutaBean.onItemSelectParticipante}"
+											update="@(.msjTablaParticipantes), @(.classTablaParticipantes), @this" />
+
+									</p:autoComplete>
+
+								</h:form>
+
+
+								<script type="text/javascript">
+									function handleAñadirParticipante(xhr,
+											status, args) {
+
+										if (args.validationFailed
+												|| args.participanteRepetido) {
+
+											PF('dlgParticipantes').jq.effect(
+													"shake", {
+														times : 2
+													}, 200);
+
+										} else {
+											PF('dlgParticipantes').hide();
+										}
+									}
+								</script>
+
+							</div>
+						</div>
+
+
+
+						<br></br>
+
+						<h:form id="formDialogoMinuta">
+
+
+							<p:dialog header="Firmar Minuta" widgetVar="dlgFirmaMinuta"
+								modal="true" responsive="true" width="300" height="100%"
+								minimizable="false" draggable="false" closeOnEscape="true"
+								maximizable="false">
+
+								<p:outputPanel styleClass="classDlgFirma">
+									<h1>
+										Participante
+										<h:outputText
+											value="#{dialogoFirmarBean.participante.persona.nombre} #{ dialogoFirmarBean.participante.persona.apellidoPaterno } #{ dialogoFirmarBean.participante.persona.apellidoPaterno }"></h:outputText>
+									</h1>
+
+									<p:commandButton value="Limpiar" icon="ui-icon-close"
+										type="button" onclick="PF('sig').clear()" />
+
+									<p:signature widgetVar="sig"
+										value="#{dialogoFirmarBean.participante.firma}"
+										guideline="true" style="width: 100%; height: 300px;"></p:signature>
+
+								</p:outputPanel>
+
+								<f:facet name="header">
+
+									<p:commandButton id="botonAceptarDlgFirmar"
+										widgetVar="wbotonAceptarDlgParticipante" value="Aceptar"
+										actionListener="#{dialogoFirmarBean.participante.addFirmaBD}"
+										icon="fa fa-check" onclick="PF('dlgFirmaMinuta').hide()" />
+									<p:commandButton id="botonCancelarDlgParticipante"
+										widgetVar="wbotonCancelarDlgFirmar" value="Cancelar"
+										type="button" styleClass="secondary-button" icon="fa fa-close"
+										onclick="PF('dlgFirmaMinuta').hide()" />
+
+								</f:facet>
+
+							</p:dialog>
+
+						</h:form>
+
+						<h:form id="formDialogoEmail">
+
+
+							<p:dialog header="Email del Participante" widgetVar="dlgEmail"
+								modal="true" responsive="true" width="300" height="100%"
+								minimizable="false" draggable="false" closeOnEscape="true"
+								maximizable="false">
+
+								<p:outputPanel styleClass="classDlgEmail">
+									<h1>
+										Participante
+										<h:outputText
+											value="#{dialogoEmailBean.participante.persona.nombre} #{ dialogoEmailBean.participante.persona.apellidoPaterno } #{ dialogoEmailBean.participante.persona.apellidoPaterno }"></h:outputText>
+									</h1>
+
+									<h:inputText id="email"
+										value="#{dialogoEmailBean.participante.email}" required="true"
+										validatorMessage="La dirección es incorrecta...">
+										<f:validateRegex
+											pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+									</h:inputText>
+									<p:message styleClass="msjDlgEmail" for="email" />
+
+								</p:outputPanel>
+
+								<f:facet name="header">
+
+									<p:commandButton id="botonAceptarDlgEmail"
+										widgetVar="wbotonAceptarDlgEmail" value="Aceptar"
+										actionListener="#{dialogoEmailBean.updateEmailParticipante}"
+										update="@(.msjDlgEmail)" icon="fa fa-check"
+										oncomplete="handleAñadirEmailParticipante(xhr, status, args)" />
+									<p:commandButton id="botonCancelarDlgEmail"
+										widgetVar="wbotonCancelarDlgEmail" value="Cancelar"
+										type="button" styleClass="secondary-button" icon="fa fa-close"
+										onclick="PF('dlgEmail').hide()" />
+
+								</f:facet>
+
+							</p:dialog>
+
+						</h:form>
+
+						<script type="text/javascript">
+							function handleAñadirEmailParticipante(xhr, status,
+									args) {
+
+								if (args.validationFailed) {
+
+									PF('dlgEmail').jq.effect("shake", {
+										times : 2
+									}, 200);
+
+								} else {
+									PF('dlgEmail').hide();
+								}
+							}
+						</script>
+
+
+
+						<p:messages styleClass="msjTablaParticipantes" closable="true"
+							showDetail="true">
+						</p:messages>
+
+						<h:form id="formTablaParticipantes">
+
+							<p:dataTable id="idTablaParticipantes"
+								styleClass="classTablaParticipantes"
+								widgetVar="wTablaParticipantes" reflow="true" emptyMessage="..."
+								value="#{minutaBean.minuta.participantes}" var="participante"
+								selection="#{minutaBean.tablaParticipantesSelection}"
+								filteredValue="#{minutaBean.tablaParticipantesFilter}"
+								paginator="true" paginatorPosition="top" rows="10"
+								paginatorAlwaysVisible="true"
+								rowKey="#{participante.idParticipante}">
+
+
+								<p:column headerText="Firma" style="width: 65px;">
+
+									<p:commandButton icon="fa fa-edit"
+										onclick="PF('dlgFirmaMinuta').show()"
+										update="@(.classDlgFirma)">
+										<f:setPropertyActionListener value="#{participante}"
+											target="#{dialogoFirmarBean.participante}" />
+									</p:commandButton>
+
+								</p:column>
+
+								<p:column headerText="Email" style="width: 65px;">
+
+									<p:commandButton icon="fa fa-edit"
+										onclick="PF('dlgEmail').show()" update="@(.classDlgEmail)">
+										<f:setPropertyActionListener value="#{participante}"
+											target="#{dialogoEmailBean.participante}" />
+									</p:commandButton>
+
+								</p:column>
+
+								<p:column headerText="Nombres">
+									<h:outputText value="#{participante.persona.nombre}"></h:outputText>
+								</p:column>
+
+								<p:column headerText="Apellido Paterno">
+									<h:outputText value="#{participante.persona.apellidoPaterno}"></h:outputText>
+								</p:column>
+
+								<p:column headerText="Apellido Materno">
+									<h:outputText value="#{participante.persona.apellidoMaterno}"></h:outputText>
+								</p:column>
+
+								<p:column headerText="Cargo">
+									<h:outputText value="#{participante.persona.cargo}"></h:outputText>
+								</p:column>
+
+								<p:column style="width: 150px;">
+
+									<p:commandButton icon="fa fa-times"
+										actionListener="#{minutaBean.removeParticipanteDeMinuta(participante)}"
+										update="@(.classTablaParticipantes)">
+									</p:commandButton>
+
+								</p:column>
+
+							</p:dataTable>
+
+
+						</h:form>
+
+
+						<!-- FIN DE SECCIÓN DE PARTICIPANTES -->
+
+
+
+
+
+						<!-- SECCIÓN PARA AÑADIR TEMAS -->
+
+						<h:form id="formDlgTemaMinuta">
+
+							<p:dialog header="Tema de Minuta" widgetVar="dlgTema"
+								modal="true" responsive="true" draggable="false" width="300"
+								minimizable="true" maximizable="true" closeOnEscape="true"
+								closable="true" focus="inputDescripcionTema">
+
+								<p:outputPanel styleClass="classDlgTema">
+
+									<div class="card card-w-title">
+
+										<h1>Datos del Tema</h1>
+
+										<p:messages styleClass="msjDlgTema" closable="true"
+											showDetail="true">
+										</p:messages>
+
+										<p:panelGrid id="panelGridNDlgTema" columns="1" layout="grid"
+											styleClass="ui-panelgrid-blank form-group">
+
+											<p:inputText id="inputDescripcionTema"
+												placeholder="Asunto o descripción"
+												value="#{dialogoTemaBean.temaMinuta.descripcion}"
+												required="true" requiredMessage="- Asunto del tema">
+											</p:inputText>
+
+											<p:outputLabel for="oneMenuResponsables" value="Responsable:"></p:outputLabel>
+
+											<p:selectOneMenu id="oneMenuResponsables"
+												value="#{dialogoTemaBean.temaMinuta.responsable}"
+												converter="participanteConverterDialogoTema" effect="fade"
+												var="pa" filter="true" filterMatchMode="startsWith"
+												required="true" requiredMessage="- Responsable">
+
+												<f:selectItems value="#{minutaBean.minuta.participantes}"
+													var="p"
+													itemLabel="#{p.persona.nombre} #{p.persona.apellidoPaterno}"
+													itemValue="#{p}" />
+
+												<p:column>
+													<h:outputText
+														value="#{pa.persona.nombre} #{pa.persona.apellidoPaterno} #{pa.persona.apellidoMaterno}" />
+												</p:column>
+
+
+											</p:selectOneMenu>
+
+										</p:panelGrid>
+									</div>
+
+								</p:outputPanel>
+
+								<f:facet name="footer">
+
+
+									<p:commandButton id="botonAceptarDlgTema"
+										widgetVar="wbotonAceptarDlgTema" value="Aceptar"
+										icon="fa fa-check"
+										actionListener="#{dialogoTemaBean.actionGuardarTema}"
+										update="@(.msjDlgTema), @(.classTablaTemas)"
+										oncomplete="handleAñadirTema(xhr, status, args)"
+										process="@form" />
+
+
+									<p:commandButton id="botonCancelarDlgTema"
+										widgetVar="wbotonCancelarDlgTema" value="Cancelar"
+										type="button" styleClass="secondary-button" icon="fa fa-close"
+										onclick="PF('dlgTema').hide()" />
+
+
+								</f:facet>
+
+
+
+							</p:dialog>
+
+						</h:form>
+
+						<script type="text/javascript">
+							function handleAñadirTema(xhr, status, args) {
+
+								if (args.validationFailed || !args.temaAñadido) {
+
+									PF('dlgTema').jq.effect("shake", {
+										times : 2
+									}, 200);
+
+								} else {
+									PF('dlgTema').hide();
+								}
+							}
+						</script>
+
+						<h:form id="formDlgTemaDesarrollo">
+
+							<p:dialog header="Desarrollo de Tema"
+								widgetVar="dlgTemaDesarrollo" modal="true" responsive="true"
+								draggable="false" width="300" minimizable="false"
+								maximizable="true" closeOnEscape="true" closable="true"
+								focus="textEditorDlgTemaDesarrollo">
+
+								<p:outputPanel styleClass="classDlgTemaDesarrollo">
+
+									<div class="card card-w-title">
+
+										<h1>Desarrollo</h1>
+
+										<p:messages styleClass="msjDlgTemaDesarrollo" closable="true"
+											showDetail="true">
+										</p:messages>
+
+										<p:textEditor id="textEditorDlgTemaDesarrollo"
+											value="#{dialogoTemaBean.temaMinuta.desarrollo}">
+											<f:facet name="toolbar">
+												<span class="ql-formats">
+													<button class="ql-bold"></button>
+													<button class="ql-italic"></button>
+													<button class="ql-underline"></button>
+													<button class="ql-strike"></button>
+												</span>
+												<span class="ql-formats">
+													<button class="ql-image"></button>
+												</span>
+											</f:facet>
+
+										</p:textEditor>
+
+									</div>
+
+								</p:outputPanel>
+
+								<f:facet name="header">
+
+
+									<p:commandButton id="botonAceptarDlgTemaDesarrollo"
+										widgetVar="wbotonAceptarDlgTemaDesarrollo" value="Aceptar"
+										icon="fa fa-check"
+										actionListener="#{dialogoTemaBean.actionUpdateDesarrolloTemaMinuta}"
+										update="@(.msjDlgTemaDesarrollo)"
+										oncomplete="handleAñadirTemaDesarrollo(xhr, status, args)"
+										process="@form" />
+
+
+									<p:commandButton id="botonCancelarDlgTemaDesarrollo"
+										widgetVar="wbotonCancelarDlgTemaDesarrollo" value="Cancelar"
+										type="button" styleClass="secondary-button" icon="fa fa-close"
+										onclick="PF('dlgTemaDesarrollo').hide()" />
+
+
+								</f:facet>
+
+
+
+							</p:dialog>
+
+						</h:form>
+
+						<script type="text/javascript">
+							function handleAñadirTemaDesarrollo(xhr, status,
+									args) {
+
+								if (args.validationFailed
+										|| !args.temaActualizado) {
+
+									PF('dlgTemaDesarrollo').jq.effect("shake",
+											{
+												times : 2
+											}, 200);
+
+								} else {
+									PF('dlgTemaDesarrollo').hide();
+								}
+							}
+						</script>
+
+						<!-- DIALOGO PARA AÑADIR COMPROMISO PENDIENTE -->
+
+						<h:form id="formDlgCompromisoPendiente">
+
+							<p:dialog header="Añadir Tema - Compromiso Pendiente"
+								widgetVar="dlgCompromisoPendiente" modal="true"
+								responsive="true" width="300" height="400" minimizable="false"
+								maximizable="true" draggable="false" closeOnEscape="true">
+
+								<p:outputPanel deferredMode="visible">
+									<p:autoUpdate></p:autoUpdate>
+
+									<p:messages styleClass="msjDlgCompromisoPendiente"
+										closable="true" showDetail="true">
+									</p:messages>
+
+									<div class="ui-g">
+
+
+										<div class="ui-g-12">
+
+											<p:outputLabel for="listaCompPendiente"
+												value="Compromiso no resuelto" />
+
+											<br></br>
+
+											<p:selectOneMenu id="listaCompPendiente" required="true"
+												style="width:95%;" value="#{dialogoTemaBean.temaCompromiso}"
+												var="compromiso" filter="true" filterMatchMode="contains"
+												showCheckbox="true"
+												converter="compromisoConverterDlgCompNoFinalizado">
+												<f:selectItems
+													value="#{dialogoTemaBean.compromisosNoFinalizados}"
+													var="elemento" itemLabel="#{elemento.descripcion}"
+													itemValue="#{elemento}" />
+
+												<p:column>
+													<h:outputText value="#{compromiso.descripcion}" />
+												</p:column>
+
+												</p:selectOneMenu>
+
+										</div>
+
+
+										<div class="ui-g-12">
+
+											<p:outputLabel for="oneMenuResponsables"
+												value="Responsable del tema" />
+											<br></br>
+
+											<p:selectOneMenu id="oneMenuResponsables" style="width: 95%;"
+												value="#{dialogoTemaBean.temaMinuta.responsable}"
+												converter="participanteConverterDialogoTema" effect="fade"
+												var="pa" filter="true" filterMatchMode="startsWith"
+												required="true" requiredMessage="- Responsable">
+
+												<f:selectItems value="#{minutaBean.minuta.participantes}"
+													var="p"
+													itemLabel="#{p.persona.nombre} #{p.persona.apellidoPaterno}"
+													itemValue="#{p}" />
+
+												<p:column>
+													<h:outputText
+														value="#{pa.persona.nombre} #{pa.persona.apellidoPaterno} #{pa.persona.apellidoMaterno}" />
+												</p:column>
+
+
+											</p:selectOneMenu>
+
+										</div>
+
+									</div>
+
+
+								</p:outputPanel>
+
+								<f:facet name="header">
+
+									<p:commandButton id="botonAceptarDlgCompromisoPendiente"
+										widgetVar="wbotonAceptarDlgCompromisoPendiente"
+										value="Aceptar" icon="fa fa-check"
+										actionListener="#{dialogoTemaBean.actionGuardarTemaDeCompromiNoFinalizado}"
+										update="@(.classTablaTemas)"
+										oncomplete="handleAñadirCompromisoPendiente(xhr, status, args)"
+										process="@form" />
+
+									<p:commandButton id="botonCancelardlgCompromisoPendiente"
+										widgetVar="wbotonCancelardlgCompromisoPendiente"
+										value="Cancelar" type="button" styleClass="secondary-button"
+										icon="fa fa-close"
+										onclick="PF('dlgCompromisoPendiente').hide()" />
+
+								</f:facet>
+
+							</p:dialog>
+
+						</h:form>
+
+						<script type="text/javascript">
+							function handleAñadirCompromisoPendiente(xhr,
+									status, args) {
+
+								if (args.validationFailed || !args.temaAñadido) {
+
+									PF('dlgCompromisoPendiente').jq.effect(
+											"shake", {
+												times : 2
+											}, 200);
+
+								} else {
+									PF('dlgCompromisoPendiente').hide();
+								}
+							}
+						</script>
+
+
+
+						<!-- FIN DE DIÁLOGO PARA AÑADIR COMPROMISO PENDIENTE -->
+
+
+						<h1>Temas</h1>
+
+
+						<h:form>
+							<div class="ui-g">
+								<div class="ui-g-6">
+									<p:commandButton value="Añadir Tema" icon="fa fa-plus"
+										actionListener="#{dialogoTemaBean.addTemaNuevo}"
+										onclick="PF('dlgTema').show()" update="@(.classDlgTema)">
+									</p:commandButton>
+								</div>
+								<div class="ui-g-6">
+									<p:commandButton id="botonAñadirCompromisoPendiente"
+										value="Añadir Compromiso Pendiente" icon="fa fa-download"
+										actionListener="#{dialogoTemaBean.preparaDialogoCompromisosNoResueltos}"
+										onsuccess="PF('dlgCompromisoPendiente').show()" />
+								</div>
+							</div>
+
+						</h:form>
+
+						<div></div>
+
+						<br></br>
+
+
+						<h:form id="formTablaTema">
+
+							<p:dataTable id="tablaTemaMinuta" widgetVar="wTablaTemaMinuta"
+								styleClass="classTablaTemas" reflow="true" emptyMessage="..."
+								value="#{minutaBean.minuta.temas}" var="tema" paginator="true"
+								paginatorPosition="top" rows="10" paginatorAlwaysVisible="true">
+
+								<p:column headerText="Editar" style="width: 150px;">
+
+									<p:commandButton icon="fa fa-edit"
+										onclick="PF('dlgTema').show()" update="@(.classDlgTema)">
+
+										<f:setPropertyActionListener value="#{tema}"
+											target="#{dialogoTemaBean.temaMinuta}" />
+									</p:commandButton>
+								</p:column>
+
+								<p:column headerText="Descripción del Tema">
+
+									<h:outputText value="#{tema.descripcion}"></h:outputText>
+
+								</p:column>
+
+								<p:column headerText="Responsable">
+
+									<h:outputText
+										value="#{tema.responsable.persona.nombre} #{tema.responsable.persona.apellidoPaterno} #{tema.responsable.persona.apellidoMaterno}"></h:outputText>
+									<br></br>
+									<h:outputText style="font-weight: bold;"
+										value="#{tema.responsable.persona.cargo}"></h:outputText>
+
+								</p:column>
+
+								<p:column headerText="Desarrollo del Tema" style="width: 150px;">
+
+									<p:commandButton icon="fa fa-edit "
+										onclick="PF('dlgTemaDesarrollo').show();"
+										update="@(.classDlgTemaDesarrollo)">
+										<f:setPropertyActionListener value="#{tema}"
+											target="#{dialogoTemaBean.temaMinuta}" />
+									</p:commandButton>
+
+								</p:column>
+
+								<p:column style="width: 150px;">
+
+									<p:commandButton icon="fa fa-close"
+										actionListener="#{minutaBean.removeTemaDeMinuta(tema)}"
+										update="@(.classTablaTemas)">
+
+									</p:commandButton>
+
+								</p:column>
+
+							</p:dataTable>
+
+						</h:form>
+
+						<!-- FIN DE SECCIÓN PARA TEMAS -->
+
+
+						<!-- SECCIÓN PARA AÑADIR COMPROMISOS -->
+
+						<h:form id="formDlgCompromisoMinuta">
+
+							<p:dialog header="Compromiso" widgetVar="dlgCompromiso"
+								modal="true" responsive="true" draggable="false" width="300"
+								minimizable="true" maximizable="true" closeOnEscape="true"
+								closable="true" focus="inputDescripcionCompromiso">
+
+								<p:outputPanel styleClass="classDlgCompromiso">
+
+									<div class="card card-w-title">
+
+										<h1>Datos del Compromiso</h1>
+
+										<p:messages styleClass="msjDlgCompromiso" closable="true"
+											showDetail="true">
+										</p:messages>
+
+										<p:panelGrid id="panelGridNDlgCompromiso" columns="1"
+											layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+											<p:inputText id="inputDescripcionCompromiso"
+												placeholder="Asunto o descripción"
+												value="#{dialogoCompromisoBean.compromiso.descripcion}"
+												required="true" requiredMessage="- Asunto del Compromiso">
+											</p:inputText>
+
+											<p:outputLabel for="oneMenuResponsables" value="Responsable"></p:outputLabel>
+
+											<p:selectOneMenu id="oneMenuResponsables"
+												value="#{dialogoCompromisoBean.compromiso.responsable}"
+												converter="participanteConverterDialogoTema" effect="fade"
+												var="pa" filter="true" filterMatchMode="startsWith"
+												required="true" requiredMessage="- Responsable">
+
+												<f:selectItems value="#{minutaBean.minuta.participantes}"
+													var="p"
+													itemLabel="#{p.persona.nombre} #{p.persona.apellidoPaterno}"
+													itemValue="#{p}" />
+
+												<p:column>
+													<h:outputText
+														value="#{pa.persona.nombre} #{pa.persona.apellidoPaterno} #{pa.persona.apellidoMaterno}" />
+												</p:column>
+
+
+											</p:selectOneMenu>
+
+											<p:outputLabel for="inputFechaProbable"
+												value="Fecha estimada de finalización"></p:outputLabel>
+
+											<p:calendar id="inputFechaProbable"
+												value="#{dialogoCompromisoBean.compromiso.fechaFinalizacionEstimada}"></p:calendar>
+
+										</p:panelGrid>
+									</div>
+
+								</p:outputPanel>
+
+								<f:facet name="footer">
+
+
+									<p:commandButton id="botonAceptarDlgCompromiso"
+										widgetVar="wbotonAceptarDlgCompromiso" value="Aceptar"
+										icon="fa fa-check"
+										actionListener="#{dialogoCompromisoBean.actionGuardarCompromiso}"
+										update="@(.msjDlgCompromiso), @(.classTablaCompromisos)"
+										oncomplete="handleAñadirCompromiso(xhr, status, args)"
+										process="@form" />
+
+
+									<p:commandButton id="botonCancelarDlgCompromiso"
+										widgetVar="wbotonCancelarDlgCompromiso" value="Cancelar"
+										type="button" styleClass="secondary-button" icon="fa fa-close"
+										onclick="PF('dlgCompromiso').hide()" />
+
+
+								</f:facet>
+
+
+
+							</p:dialog>
+
+						</h:form>
+
+						<script type="text/javascript">
+							function handleAñadirCompromiso(xhr, status, args) {
+
+								if (args.validationFailed
+										|| !args.compromisoAñadido) {
+
+									PF('dlgCompromiso').jq.effect("shake", {
+										times : 2
+									}, 200);
+
+								} else {
+									PF('dlgCompromiso').hide();
+								}
+							}
+						</script>
+
+
+
+						<h1>Compromisos</h1>
+
+
+						<h:form>
+
+							<p:commandButton value="Añadir Compromiso" icon="fa fa-plus"
+								actionListener="#{dialogoCompromisoBean.addCompromisoNuevo}"
+								update="@(.classDlgCompromiso)"
+								onclick="PF('dlgCompromiso').show()"></p:commandButton>
+
+
+						</h:form>
+
+						<br></br>
+
+
+						<h:form id="formTablaCompromiso">
+
+							<p:dataTable id="tablaCompromisoMinuta"
+								widgetVar="classTablaCompromisos"
+								styleClass="classTablaCompromisos" reflow="true"
+								emptyMessage="..." value="#{minutaBean.minuta.compromisos}"
+								var="compromiso" paginator="true" paginatorPosition="top"
+								rows="10" paginatorAlwaysVisible="true">
+
+								<p:column headerText="Editar" style="width: 150px;">
+
+									<p:commandButton icon="fa fa-edit"
+										onclick="PF('dlgCompromiso').show()"
+										update="@(.classDlgCompromiso)">
+
+										<f:setPropertyActionListener value="#{compromiso}"
+											target="#{dialogoCompromisoBean.compromiso}" />
+									</p:commandButton>
+								</p:column>
+
+								<p:column headerText="Descripción del Compromiso">
+
+									<h:outputText value="#{compromiso.descripcion}"></h:outputText>
+
+								</p:column>
+
+								<p:column headerText="Responsable">
+
+									<h:outputText
+										value="#{compromiso.responsable.persona.nombre} #{compromiso.responsable.persona.apellidoPaterno} #{compromiso.responsable.persona.apellidoMaterno}"></h:outputText>
+									<br></br>
+									<h:outputText style="font-weight: bold;"
+										value="#{compromiso.responsable.persona.cargo}"></h:outputText>
+
+								</p:column>
+
+								<p:column headerText="Finalización">
+
+									<h:outputText value="#{compromiso.fechaFinalizacionEstimada}">
+										<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+									</h:outputText>
+
+								</p:column>
+
+								<p:column style="width: 150px;">
+
+									<p:commandButton icon="fa fa-close"
+										actionListener="#{minutaBean.removeCompromisoDeMinuta(compromiso)}"
+										update="@(.classTablaCompromisos)">
+									</p:commandButton>
+
+								</p:column>
+
+							</p:dataTable>
+
+						</h:form>
+
+						<!-- FIN DE SECCIÓN DE COMPROMISOS -->
+
+
+
+						<h:form>
+
+							<h1>Introducción</h1>
+
+							<p:textEditor height="300"
+								value="#{minutaBean.minuta.introduccion}"
+								valueChangeListener="#{minutaBean.minuta.updateIntroduccionMinuta}">
+								<p:ajax event="blur"></p:ajax>
+							</p:textEditor>
+
+
+							<h1>Conclusión</h1>
+
+							<p:textEditor height="300"
+								value="#{minutaBean.minuta.conclusion}"
+								valueChangeListener="#{minutaBean.minuta.updateConclusionMinuta}">
+								<p:ajax event="blur"></p:ajax>
+							</p:textEditor>
+
+						</h:form>
+
+						<div class="card">
+							<h1>Opciones de la Minuta</h1>
+
+							<p:commandButton value="Generar Minuta" style="width:100%"
+								actionListener="#{minutaBean.generarPDF}"
+								update="@(.formVisualizacion)" />
+
+
+							<p:spacer height="15"></p:spacer>
+							<p:messages id="msjEnvioEmailMinuta" showDetail="true"></p:messages>
+
+							<p:commandButton value="Enviar por Email" style="width:100%"
+								actionListener="#{minutaBean.actionSendEmail}" />
+
+
+							<!-- Left Side -->
+							<div class="card">
+								<h1>Visualización de la Minuta</h1>
+								<h:form styleClass="formVisualizacion">
+
+									<div class="ui-g">
+										<div class="ui-g-6">
+											<h:outputLink target="blank"
+												value="#{request.contextPath}/resources/minutas/#{minutaBean.minuta.idMinuta}.pdf">
+												<p:commandButton type="button" value="Visualizar en PDF"></p:commandButton>
+											</h:outputLink>
+
+										</div>
+										<div class="ui-g-6">
+											<h:outputLink target="blank"
+												value="#{request.contextPath}/resources/minutas/#{minutaBean.minuta.idMinuta}.html">
+												<p:commandButton type="button" value="Visualizar en HTML"></p:commandButton>
+											</h:outputLink>
+
+
+										</div>
+									</div>
+
+								</h:form>
+							</div>
+
+
+						</div>
+					</h:panelGroup>
+
+				</h:panelGroup>
+
+
+
+			</div>
+
+
+
+		</div>
+
+	</div>
+
+
+
+
+</ui:composition>

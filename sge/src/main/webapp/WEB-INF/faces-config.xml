@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+
+	<name>sgel</name>
+
+	<component>
+		<component-type>org.primefaces.component.HarmonyMenu</component-type>
+		<component-class>org.primefaces.harmony.component.HarmonyMenu</component-class>
+	</component>
+
+	<render-kit>
+		<renderer>
+			<component-family>org.primefaces.component</component-family>
+			<renderer-type>org.primefaces.component.HarmonyMenuRenderer</renderer-type>
+			<renderer-class>org.primefaces.harmony.component.HarmonyMenuRenderer</renderer-class>
+		</renderer>
+	</render-kit>
+
+	<lifecycle>
+		<phase-listener>util.SesionPhaseListener</phase-listener>
+	</lifecycle>
+
+	<navigation-rule>
+		<from-view-id>/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>Admin</from-outcome>
+			<to-view-id>/portal/dashboard.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>Usuario</from-outcome>
+			<to-view-id>/portal/dashboard.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>SuperAdmin</from-outcome>
+			<to-view-id>/portal/dashboard.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>cerrarSesion</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/portal/*</from-view-id>
+		<navigation-case>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/portal/dashboard.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>gestionproductos</from-outcome>
+			<to-view-id>/portal/nominas/gestionproductos.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>gestionarchivosbanco</from-outcome>
+			<to-view-id>/portal/nominas/gestionarchivosbanco.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>gestionpuestos</from-outcome>
+			<to-view-id>/portal/nominas/gestionpuestos.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>gestiontimbrado</from-outcome>
+			<to-view-id>/portal/nominas/gestiontimbrado.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>consultatrabajador</from-outcome>
+			<to-view-id>/portal/nominas/consultatrabajador.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>consultaproducto</from-outcome>
+			<to-view-id>/portal/nominas/consultaproducto.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>perded</from-outcome>
+			<to-view-id>/portal/nominas/generacionperded.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>sindicato</from-outcome>
+			<to-view-id>/portal/nominas/infosindicato.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>catalogosnomina</from-outcome>
+			<to-view-id>/portal/nominas/catalogos.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>trimestrales</from-outcome>
+			<to-view-id>/portal/nominas/trimestrales.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>flujoefectivo</from-outcome>
+			<to-view-id>/portal/nominas/flujoefectivo.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>consultaconpers</from-outcome>
+			<to-view-id>/portal/nominas/consultaconpers.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>unificacion</from-outcome>
+			<to-view-id>/portal/nominas/unificacion.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>mantempleados</from-outcome>
+			<to-view-id>/portal/nominas/mantempleados.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>plantillas</from-outcome>
+			<to-view-id>/portal/nominas/plantillas.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>validacionrfc</from-outcome>
+			<to-view-id>/portal/nominas/validacionrfc.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>archivodigital</from-outcome>
+			<to-view-id>/portal/archivodigital/index.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>siri</from-outcome>
+			<to-view-id>/portal/siri/index.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/portal/*</from-view-id>
+		<navigation-case>
+			<from-outcome>ConfigurarUsuarios</from-outcome>
+			<to-view-id>/portal/administracion/usuarios.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/portal/*</from-view-id>
+		<navigation-case>
+			<from-outcome>spoolerPDF</from-outcome>
+			<to-view-id>/portal/spooler/index.xhtml</to-view-id>
+			<redirect include-view-params="true"></redirect>
+		</navigation-case>
+	</navigation-rule>
+
+
+</faces-config>

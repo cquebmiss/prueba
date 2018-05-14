@@ -1,0 +1,62 @@
+<!-- Menú lateral -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ph="http://primefaces.org/harmony">
+
+	<div class="layout-sidebar">
+		<div class="nano">
+			<div class="nano-content menu-scroll-content">
+				<h:form id="menuform">
+					<ph:menu widgetVar="me">
+						<p:menuitem id="om_dashboard" value="Dashboard" rendered="false"
+							icon="fa fa-fw fa-dashboard" outcome="/portal/dashboard" />
+						
+						<p:submenu id="om_minutas" label="Minutas"  rendered="false"
+							icon="fa fa-fw fa-file-text">
+							<p:menuitem id="om_histMinutas" value="Historial"
+								icon="fa fa-fw fa-history" outcome="/portal/historialminutas" />
+							<p:menuitem id="om_nuevaminuta" value="Nueva Minuta"
+								icon="fa fa-fw fa-plus" action="#{minutaBean.actionNuevaMinuta}"
+								update="@all">
+							</p:menuitem>
+
+						</p:submenu>
+ 
+
+						<p:menuitem id="om_buy" value="Compromisos" rendered="false"
+							icon="fa fa-fw fa-paperclip " outcome="/portal/compromisos" />
+
+						<p:submenu id="om_modEncuestas" label="Clima Laboral"
+							icon="fa fa-fw fa-users">
+							<p:menuitem id="om_muestreo" value="Muestreo Aleatorio"
+								icon="fa fa-fw fa-random"
+								outcome="/portal/climalaboral/muestreo" />
+
+							<p:menuitem id="om_encuesta" value="Encuestas"
+								icon="fa fa-fw fa-align-center "
+								outcome="/portal/climalaboral/encuestas" update="@all">
+							</p:menuitem>
+
+							<p:menuitem id="om_resultados" value="Resultados"
+								icon="fa fa-fw fa-check"
+								outcome="/portal/climalaboral/resultados" update="@all">
+							</p:menuitem>
+
+						</p:submenu>
+
+						<p:separator></p:separator>
+
+						<p:menuitem id="om_close" value="Cerrar Sesión"
+							icon="fa fa-fw fa-power-off" immediate="true"
+							action="#{Sesion.actionCerrarSesion}" />
+
+					</ph:menu>
+
+				</h:form>
+			</div>
+		</div>
+	</div>
+</ui:composition>

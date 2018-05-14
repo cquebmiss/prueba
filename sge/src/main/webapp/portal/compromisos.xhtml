@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">Sistema de Gestión Empresarial - Compromisos Derivados de Reuniones</ui:define>
+	<ui:define name="viewname">
+		<li>Portal</li>
+		<li>/</li>
+		<li><p:link outcome="/portal/compromisos">Compromisos Derivados de Reuniones</p:link></li>
+	</ui:define>
+
+	<ui:define name="content">
+		<div class="ui-g">
+			<div class="ui-g-12">
+				<div class="card">
+					<h1>Compromisos Derivados de Reuniones</h1>
+
+					<!-- 
+					<div>
+						<div class="ui-inputgroup">
+							<p:inputText placeholder="Buscar..." />
+							<p:commandButton icon="fa fa-search" styleClass="white-button" />
+						</div>
+					</div>
+					 -->
+
+
+					<h:form>
+
+						<p:dataTable id="tablaCompromisos" widgetVar="wTablaCompromisos"
+							styleClass="classTablaCompromisos" reflow="true"
+							emptyMessage="..."
+							value="#{historialCompromisosBean.compromisos}" var="compromiso"
+							filteredValue="#{historialCompromisosBean.compromisosFilter}"
+							paginator="true" paginatorPosition="top" rows="10"
+							paginatorAlwaysVisible="true">
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<p:inputText id="globalFilter"
+										onkeyup="PF('wTablaCompromisos').filter()" style="width:150px"
+										placeholder="Buscar..." />
+								</p:outputPanel>
+							</f:facet>
+
+
+							<p:column headerText="Asunto" sortBy="#{compromiso.descripcion}"
+								filterBy="#{compromiso.descripcion}" filterMatchMode="contains">
+								<h:outputText value="#{compromiso.descripcion}"></h:outputText>
+							</p:column>
+
+							<p:column headerText="Responsable"
+								sortBy="#{compromiso.responsable.persona.nombre} #{compromiso.responsable.persona.apellidoPaterno} #{compromiso.responsable.persona.apellidoMaterno} #{compromiso.responsable.persona.cargo}"
+								filterBy="#{compromiso.responsable.persona.nombre} #{compromiso.responsable.persona.apellidoPaterno} #{compromiso.responsable.persona.apellidoMaterno} #{compromiso.responsable.persona.cargo}"
+								filterMatchMode="contains">
+
+								<h:outputText
+									value="#{compromiso.responsable.persona.nombre} #{compromiso.responsable.persona.apellidoPaterno} #{compromiso.responsable.persona.apellidoMaterno} "></h:outputText>
+								<br></br>
+								<h:outputText style="font-weight: bolder;"
+									value="#{compromiso.responsable.persona.cargo} "></h:outputText>
+
+							</p:column>
+
+							<p:column headerText="Fecha Finalización Estimada"
+								sortBy="#{compromiso.fechaFinalizacionEstimadaString}"
+								filterBy="#{compromiso.fechaFinalizacionEstimadaString}"
+								filterMatchMode="contains" style="text-align: center;">
+								<h:outputText
+									value="#{compromiso.fechaFinalizacionEstimadaString}">
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Status" style="text-align: center;"
+								sortBy="#{compromiso.actividad.statusActividad.descripcion}"
+								filterBy="#{compromiso.actividad.statusActividad.descripcion}"
+								filterMatchMode="contains">
+
+								<f:facet name="filter">
+									<p:selectOneMenu onchange="PF('wTablaCompromisos').filter()">
+										<f:selectItem itemLabel="..." itemValue="#{null}"
+											noSelectionOption="true" />
+										<f:selectItem itemLabel="Agendadada" itemValue="Agendada" />
+										<f:selectItem itemLabel="Iniciada" itemValue="Iniciada" />
+										<f:selectItem itemLabel="Finalizada" itemValue="Finalizada" />
+
+									</p:selectOneMenu>
+								</f:facet>
+
+								<h:outputText type="button"
+									value="#{compromiso.actividad.statusActividad.descripcion}">
+								</h:outputText>
+
+							</p:column>
+
+							<p:column headerText="Opciones"
+								style="width: 150px; text-align: center;">
+
+								<div class="ui-g">
+
+									<div class="ui-g-6">
+
+										<p:commandButton icon="fa fa-search"
+											actionListener="#{minuta.updateAllDataBD}"
+											onsuccess="PF('dlgDetallesMinuta').show()">
+											<f:setPropertyActionListener value="#{minuta}"
+												target="#{historialMinutasBean.minutaSelec}" />
+										</p:commandButton>
+									</div>
+
+									<div class="ui-g-6">
+
+										<h:outputLink target="blank"
+											value="#{request.contextPath}/resources/minutas/#{compromiso.minuta.idMinuta}.pdf">
+											<p:commandButton icon="fa fa-file" type="button"></p:commandButton>
+										</h:outputLink>
+									</div>
+
+								</div>
+
+							</p:column>
+
+
+						</p:dataTable>
+
+					</h:form>
+
+					<br></br> <br></br>
+
+
+					<!-- 
+
+					<p:panel header="Detalles del Compromiso">
+
+
+
+
+						<p:panelGrid columns="2"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2 ui-grc-2,ui-g-12 ui-md-4"
+							layout="grid"
+							styleClass="ui-panelgrid-blank form-group form-elements"
+							style="border:0px none; background-color:transparent;">
+
+
+							<p:outputLabel value="Comentario 2018 08 04"></p:outputLabel>
+							<h:outputText
+								value="Esto es un ejemplo de anotación o comentario desde la cuenta del responsable del compromiso"></h:outputText>
+
+
+						</p:panelGrid>
+
+					</p:panel>
+
+ -->
+
+				</div>
+			</div>
+		</div>
+
+	</ui:define>
+
+</ui:composition>
